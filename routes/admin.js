@@ -1,4 +1,3 @@
-
 import {Router} from "express";
 import { adminModel, userModel } from "../db.js";
 import jwt from 'jsonwebtoken';
@@ -52,43 +51,39 @@ adminRouter.post("/signup",async (req,res)=>{
 
 })
 
-adminRouter.post("/signin",async (req,res)=>{
-  const email = req.body.email;
-  const password = req.body.password;
+adminRouter.post("/signin", async (req, res) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
 
-  
+    const admin = await adminModel.findOne({ email });
 
-  const admin = await adminModel.findOne({
-    email : email
-  })
-
-  if(!admin){
-    res.json("email not found ji")
-  }
-  else{
-
-    const isPassword = await bcrypt.compare(password , admin.password);
-
-    if(isPassword){
-        const token = jwt.sign({id:user._id},JWT_ADMIN_SECRET);
-        
-        res.json({
-            token : token ,
-            message: "Login successful"
-        })
+    if (!admin) {
+      return res.status(403).json({ message: "incorrect credential" });
     }
-    else{
+
+    const isPasswordValid = await bcrypt.compare(password, admin.password);
+
+    if (isPasswordValid) {
+      const token = jwt.sign({ id: admin._id }, JWT_ADMIN_SECRET);
+
       res.json({
-        message: "not found"
-      })
+        token: token,
+        message: "Login successful"
+      });
+    } else {
+      res.status(403).json({
+        message: "incorrect credential"
+      });
     }
-
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "An error occurred during signin",
+      error: error.message
+    });
   }
-  
-
-
-})
-
+});
 
 adminRouter.post("/course",(req,res)=>{
   res.json({
