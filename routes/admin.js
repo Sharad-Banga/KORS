@@ -85,12 +85,7 @@ adminRouter.post("/signin", async (req, res) => {
   }
 });
 
-adminRouter.post("/course",(req,res)=>{
-  res.json({
-    message : "admin course endpoint"
-  })
-})
-
+//adding new course
 adminRouter.post("/course",adminMiddleware ,async (req,res)=>{
     const adminId = req.userId;
     const {title , description , imageUrl , price} = req.body;
@@ -110,8 +105,27 @@ adminRouter.post("/course",adminMiddleware ,async (req,res)=>{
 
 })
 
+//updating any course
 
 
+adminRouter.put("/course",adminMiddleware ,async (req,res)=>{
+  const adminId = req.userId;
+  const {title , description , imageUrl , price} = req.body;
+
+  const course = await courseModel.create({
+      title : title,
+      description: description ,
+      imageUrl : imageUrl,
+      price :price,
+      creatorId : adminId
+  });
+
+  res.json({
+    message : "Course created ",
+    courseId : course._id
+  });
+
+})
 
 
 
