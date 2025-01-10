@@ -1,7 +1,7 @@
 
 import jwt from 'jsonwebtoken';
 
-import JWT_ADMIN_SECRET from '../config.js';
+import {JWT_ADMIN_SECRET} from '../config.js';
 
 
 
@@ -20,4 +20,4 @@ function adminMiddleware(req , res ,next){
    }
 }
 
-export { userMiddleware };
+export { adminMiddleware };

@@ -7,7 +7,7 @@ import {adminMiddleware} from "../middleware/adminm.js"
 import express from 'express';
 const app = express();
 
-import JWT_ADMIN_SECRET from '../config.js';
+import {JWT_ADMIN_SECRET} from '../config.js';
 app.use(express.json());
 
 

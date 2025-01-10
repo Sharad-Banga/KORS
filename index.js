@@ -1,4 +1,4 @@
-require('dotenv').config();
+import 'dotenv/config';
 import express from 'express';
 const app = express();
 
@@ -14,19 +14,17 @@ app.use("/user",userRouter);
 app.use("/course",courseRouter);
 app.use("/admin",adminRouter);
 
-
+console.log("++++",process.env.mongoUrl);
 
 
 async function main(){
-  await mongoose.connect(process.env.MongoUrl);
+  await mongoose.connect(process.env.mongoUrl);
   mongoose.connection.on('connected', () => {
     console.log('Connected to the database');
   });
   
   app.listen(3000);
   console.log("chal rhi hai");
-  
-
 }
+
 main();
-         

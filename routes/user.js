@@ -5,7 +5,7 @@ const app = express();
 import bcrypt from 'bcrypt';
 import { userModel } from '../db.js'; 
 
-import JWT_USER_SECRET from '../config.js';
+import {JWT_USER_SECRET} from '../config.js';
 app.use(express.json());
 
 import jwt from "jsonwebtoken";
