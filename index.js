@@ -1,4 +1,4 @@
-
+require('dotenv').config();
 import express from 'express';
 const app = express();
 
@@ -18,7 +18,7 @@ app.use("/admin",adminRouter);
 
 
 async function main(){
-  await mongoose.connect("mongodb+srv://sharad_banga:sharad@cluster0.8vv4o.mongodb.net/KORS");
+  await mongoose.connect(process.env.MongoUrl);
   mongoose.connection.on('connected', () => {
     console.log('Connected to the database');
   });
