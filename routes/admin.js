@@ -1,5 +1,5 @@
 import {Router} from "express";
-import { adminModel, userModel } from "../db.js";
+import { adminModel, userModel ,courseModel } from "../db.js";
 import jwt from 'jsonwebtoken';
 const adminRouter = Router();
 import bcrypt from 'bcrypt';
@@ -110,22 +110,41 @@ adminRouter.post("/course",adminMiddleware ,async (req,res)=>{
 
 adminRouter.put("/course",adminMiddleware ,async (req,res)=>{
   const adminId = req.userId;
-  const {title , description , imageUrl , price} = req.body;
+  const {title , description , imageUrl , price ,courseId} = req.body;
 
-  const course = await courseModel.create({
+  const course = await courseModel.updateOne({
+      _id : courseId,
+      creatorId :adminId
+  },{
       title : title,
       description: description ,
       imageUrl : imageUrl,
-      price :price,
-      creatorId : adminId
+      price :price
   });
 
   res.json({
-    message : "Course created ",
-    courseId : course._id
+    message : "Course updated "
   });
 
 })
+
+
+adminRouter.get("/course/bulk",adminMiddleware ,async (req,res)=>{
+  const adminId = req.userId;
+ 
+
+  const courses = await courseModel.find({
+      
+      creatorId :adminId
+  });
+
+  res.json({
+    message : "Courses ",
+    courses
+  });
+
+})
+
 
 
 
